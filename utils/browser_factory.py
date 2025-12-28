@@ -16,9 +16,9 @@ class BrowserFactory:
 
             if headless:
                 options.add_argument("--headless")
-                options.add_argument("--start-maximized")
-                options.add_argument("--ignore-certificate-errors")
-                options.add_argument("--ignore-ssl-errors")
+            options.add_argument("--start-maximized")
+            options.add_argument("--ignore-certificate-errors")
+            options.add_argument("--ignore-ssl-errors")
 
             prefs = {
                 "profile.default_content_setting_values.notifications": 2,
@@ -40,9 +40,9 @@ class BrowserFactory:
 
             if headless:
                 options.add_argument("--headless")
-                options.add_argument("--start-maximized")
-                options.add_argument("--ignore-certificate-errors")
-                options.add_argument("--ignore-ssl-errors")
+            options.add_argument("--start-maximized")
+            options.add_argument("--ignore-certificate-errors")
+            options.add_argument("--ignore-ssl-errors")
 
             prefs = {
                 "profile.default_content_setting_values.notifications": 2,
