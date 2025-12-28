@@ -16,6 +16,7 @@ NOTE: This framework is ideal for teams looking to implement a modern, CI-ready 
     
 
 #Create and Activate venv:
+
 python -m venv venv
 venv\Scripts\activate
 
