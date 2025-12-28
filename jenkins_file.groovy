@@ -1,43 +1,46 @@
 pipeline {
     agent any
 
-    tools {
-        python 'Python3'
-        allure 'Allure'
-    }
-
     stages {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/jamserali/SeleniumPytest-bdd.git'
+                git url: 'https://github.com/jamserali/SeleniumPytest-bdd.git', branch: 'develop'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Setup Python venv') {
             steps {
-                sh 'pip install -r requirements.txt'
+                bat '''
+                python -m venv venv
+                venv\\Scripts\\python -m pip install --upgrade pip
+                venv\\Scripts\\pip install -r requirements.txt
+                '''
             }
         }
 
-        stage('Run Tests') {
+        stage('Run PyTest BDD') {
             steps {
-                sh 'pytest --alluredir=allure-results'
+                bat '''
+                venv\\Scripts\\pytest -n auto --alluredir=allure-results
+                '''
             }
         }
 
         stage('Generate Allure Report') {
             steps {
-                allure includeProperties: false,
-                       jdk: '',
-                       results: [[path: 'allure-results']]
+                bat '''
+                allure generate allure-results -o allure-report --clean
+                '''
             }
         }
     }
 
-    post {
+     post {
         always {
-            archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
+            allure includeProperties: false,
+                   jdk: '',
+                   results: [[path: 'allure-results']]
         }
     }
 }
