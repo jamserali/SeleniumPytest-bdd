@@ -1,21 +1,40 @@
 from datetime import datetime
-import os
 import allure
 import pytest_html
-import pytest
-import logging
 import base64
 from utils.browser_factory import BrowserFactory
+import os
+import pytest
+import logging
+from utils.browser_stack import BrowserStack
+
+# @pytest.fixture(scope='class', autouse=True)
+# def browser(request):
+#     logger = logging.getLogger("Bdd_Steps")
+#     logger.info("✅ Opening Browser...")
+#     driver = BrowserFactory.get_driver("chrome", True)
+#     request.session._driver = driver
+#     yield driver
+#     logger.info("❌ Quiting Browser...")
+#     driver.quit()
 
 
-@pytest.fixture(scope='class', autouse=True)
+
+
+@pytest.fixture(scope="class", autouse=True)
 def browser(request):
     logger = logging.getLogger("Bdd_Steps")
     logger.info("✅ Opening Browser...")
-    driver = BrowserFactory.get_driver("chrome", True)
+    run_on = os.getenv("RUN_ON", "browserstack").lower()
+    # Run on browserstack
+    if run_on == "browserstack":
+        driver = BrowserStack.create_browserstack_driver()
+    else:
+        # Run on local
+        driver = BrowserFactory.get_driver("chrome", True)
     request.session._driver = driver
     yield driver
-    logger.info("❌ Quiting Browser...")
+    logger.info("❌ Quitting Browser...")
     driver.quit()
 
 
