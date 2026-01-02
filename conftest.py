@@ -8,33 +8,21 @@ import pytest
 import logging
 from utils.browser_stack import BrowserStack
 
-# @pytest.fixture(scope='class', autouse=True)
-# def browser(request):
-#     logger = logging.getLogger("Bdd_Steps")
-#     logger.info("✅ Opening Browser...")
-#     driver = BrowserFactory.get_driver("chrome", True)
-#     request.session._driver = driver
-#     yield driver
-#     logger.info("❌ Quiting Browser...")
-#     driver.quit()
-
-
-
-
-@pytest.fixture(scope="class", autouse=True)
+@pytest.fixture(scope="class", autouse=True,params=["chrome","firefox"])
 def browser(request):
+    browser_name = request.param
     logger = logging.getLogger("Bdd_Steps")
-    logger.info("✅ Opening Browser...")
-    run_on = os.getenv("RUN_ON", "browserstack").lower()
+    logger.info(f"✅ Opening {browser_name} Browser...")
+    run_on = os.getenv("RUN_ON", "local").lower()
     # Run on browserstack
     if run_on == "browserstack":
         driver = BrowserStack.create_browserstack_driver()
     else:
         # Run on local
-        driver = BrowserFactory.get_driver("chrome", True)
+        driver = BrowserFactory.get_driver(browser_name, True)
     request.session._driver = driver
     yield driver
-    logger.info("❌ Quitting Browser...")
+    logger.info(f"❌ Quitting {browser_name} Browser...")
     driver.quit()
 
 
