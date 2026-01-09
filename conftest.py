@@ -6,17 +6,18 @@ from utils.browser_factory import BrowserFactory
 import os
 import pytest
 import logging
-from utils.browser_stack import BrowserStack
 
 @pytest.fixture(scope="class", autouse=True,params=["chrome","firefox"])
 def browser(request):
     browser_name = request.param
     logger = logging.getLogger("Bdd_Steps")
     logger.info(f"✅ Opening {browser_name} Browser...")
-    run_on = os.getenv("RUN_ON", "local").lower()
+    run_on = os.getenv("RUN_ON", "grid").lower()
     # Run on browserstack
     if run_on == "browserstack":
-        driver = BrowserStack.create_browserstack_driver()
+        driver = BrowserFactory.create_browserstack_driver()
+    elif run_on == "grid":
+        driver = BrowserFactory.create_grid_driver(browser_name, True)
     else:
         # Run on local
         driver = BrowserFactory.get_driver(browser_name, True)
