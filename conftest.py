@@ -20,7 +20,7 @@ def browser(request):
         driver = BrowserFactory.create_grid_driver(browser_name, True)
     else:
         # Run on local
-        driver = BrowserFactory.get_driver(browser_name, True)
+        driver = BrowserFactory.create_local_driver(browser_name, True)
     request.session._driver = driver
     yield driver
     logger.info(f"❌ Quitting {browser_name} Browser...")

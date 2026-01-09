@@ -11,7 +11,7 @@ class BrowserFactory:
     logger = logging.getLogger("Bdd_Steps")
 
     @staticmethod
-    def get_driver(browser_name: str, headless: bool = False):
+    def create_local_driver(browser_name: str, headless: bool = False):
         browser_name = browser_name.lower()
         BrowserFactory.logger.info(f"✅ Running in Local Driver Browser...")
 
