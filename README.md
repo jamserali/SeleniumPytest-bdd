@@ -32,3 +32,9 @@ pytest -n 4 --alluredir=allure-results
 #For allure report :
 allure serve allure-results
 
+#Selenium GRID:
+Before running Test ,please execute below commands for up and running selenium GRID , Hub & Node.
+Hub: 
+# java -jar selenium-server-<version>.jar hub
+Node:
+# java -jar selenium-server-<version>.jar node
